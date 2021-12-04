@@ -2,22 +2,89 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract DosuInvite is ERC721 {
+contract NFT is ERC721 {
+  using Counters for Counters.Counter;
+  Counters.Counter private _tokenIds;
 
-  uint256 constant public TOTAL_SUPPLY = 999;
-  uint16 public invitesMinted;
-  uint256 private nextId;
-    
-  constructor()  ERC721("DosuInvite", "DOSU") {}
+  address public treasure;
+  address public txFeeToken;
+  uint public txFeeAmount;
+  uint public totalInvites;
+  
+  mapping(address => bool) public excludedList;
 
-  function mint() external {
-    require(invitesMinted < TOTAL_SUPPLY, "All invites are minted");
-    require(balanceOf(msg.sender) > 1, "You are already have an invite");
+  constructor(
+    address _treasure, 
+    address _txFeeToken,
+    uint _txFeeAmount,
+    uint _totalInvites
+  ) ERC721("Dosu Invites", "DOSU") {
+    treasure = _treasure;
+    txFeeToken = _txFeeToken;
+    txFeeAmount = _txFeeAmount;
+    totalInvites = _totalInvites;
 
-    _mint(msg.sender, nextId);
-    nextId++;
-    invitesMinted++;
+    excludedList[_treasure] = true; 
+    // _mint(treasure, 0);
   }
 
+  function setExcluded(address excluded, bool status) external {
+    require(msg.sender == treasure, "treasure only");
+    excludedList[excluded] = status;
+  }
+
+  function mint() public {
+    _tokenIds.increment();
+
+    uint256 newItemId = _tokenIds.current();
+    _mint(msg.sender, newItemId);
+  }
+
+  function transferFrom(
+    address from, 
+    address to, 
+    uint256 tokenId
+  ) public override {
+     require(
+       _isApprovedOrOwner(_msgSender(), tokenId), 
+       "ERC721: transfer caller is not owner nor approved"
+     );
+     if(excludedList[from] == false) {
+      _payTxFee(from);
+     }
+     _transfer(from, to, tokenId);
+  }
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId
+   ) public override {
+     if(excludedList[from] == false) {
+       _payTxFee(from);
+     }
+     safeTransferFrom(from, to, tokenId, "");
+   }
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes memory _data
+  ) public override {
+    require(
+      _isApprovedOrOwner(_msgSender(), tokenId), 
+      "ERC721: transfer caller is not owner nor approved"
+    );
+    if(excludedList[from] == false) {
+      _payTxFee(from);
+    }
+    _safeTransfer(from, to, tokenId, _data);
+  }
+
+  function _payTxFee(address from) internal {
+    payable(from).transfer(txFeeAmount);
+  }
 }
