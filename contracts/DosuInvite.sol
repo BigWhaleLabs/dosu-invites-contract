@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NFT is ERC721 {
@@ -46,7 +46,7 @@ contract NFT is ERC721 {
     address from, 
     address to, 
     uint256 tokenId
-  ) public override {
+  ) public payable override {
      require(
        _isApprovedOrOwner(_msgSender(), tokenId), 
        "ERC721: transfer caller is not owner nor approved"
@@ -61,7 +61,7 @@ contract NFT is ERC721 {
     address from,
     address to,
     uint256 tokenId
-   ) public override {
+   ) public payable override {
      if(excludedList[from] == false) {
        _payTxFee(from);
      }
@@ -73,7 +73,7 @@ contract NFT is ERC721 {
     address to,
     uint256 tokenId,
     bytes memory _data
-  ) public override {
+  ) public payable override {
     require(
       _isApprovedOrOwner(_msgSender(), tokenId), 
       "ERC721: transfer caller is not owner nor approved"
