@@ -4,12 +4,11 @@ pragma solidity ^0.8.0;
 import "./ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract NFT is ERC721 {
+contract DosuInvite is ERC721 {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
   address public treasure;
-  address public txFeeToken;
   uint public txFeeAmount;
   uint public totalInvites;
   
@@ -17,17 +16,15 @@ contract NFT is ERC721 {
 
   constructor(
     address _treasure, 
-    address _txFeeToken,
     uint _txFeeAmount,
     uint _totalInvites
   ) ERC721("Dosu Invites", "DOSU") {
     treasure = _treasure;
-    txFeeToken = _txFeeToken;
     txFeeAmount = _txFeeAmount;
     totalInvites = _totalInvites;
 
     excludedList[_treasure] = true; 
-    // _mint(treasure, 0);
+    _mint(treasure, 0);
   }
 
   function setExcluded(address excluded, bool status) external {
@@ -35,11 +32,11 @@ contract NFT is ERC721 {
     excludedList[excluded] = status;
   }
 
-  function mint() public {
+  function mint(address _to) public {
     _tokenIds.increment();
 
-    uint256 newItemId = _tokenIds.current();
-    _mint(msg.sender, newItemId);
+    uint256 newInviteId = _tokenIds.current();
+    _mint(_to, newInviteId);
   }
 
   function transferFrom(
