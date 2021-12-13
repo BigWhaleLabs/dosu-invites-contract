@@ -33,6 +33,8 @@ contract DosuInvite is ERC721 {
   }
 
   function mint(address _to) public {
+    require(balanceOf(_to) >= 1, "This address already have an invite");
+    
     _tokenIds.increment();
 
     uint256 newInviteId = _tokenIds.current();

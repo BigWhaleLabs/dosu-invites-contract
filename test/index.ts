@@ -1,19 +1,33 @@
-import { expect } from "chai";
-import { ethers } from "hardhat";
+// @ts-nocheck
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe('DosuInvite', function () {
+  let admin, artist, user1, user2;
+  let dosuInvite;
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  beforeEach(async () => {
+    [admin, artist, user1, user2] = await ethers.getSigners();
+    const DosuInvite = await ethers.getContractFactory('DosuInvite');
+    dosuInvite = await DosuInvite.deploy(
+      '0xbf74483DB914192bb0a9577f3d8Fb29a6d4c08eE',
+      5,
+      1000
+    );
+    await dosuInvite.deployed();
+  });
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  it('Should mint an invite', async function () {
+    await dosuInvite.mint(user1.address);
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    const balanceUser1 = await dosuInvite.balanceOf(user1);
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    expect(balanceUser1.toString()).to.equal('1');
+  });
+
+  it('Should revert execution with exeption', async function () {
+    await expect(dosuInvite.mint(user1.address)).to.be.revertedWith(
+      'This address already have an invite'
+    );
   });
 });
