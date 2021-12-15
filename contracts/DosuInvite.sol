@@ -3,87 +3,54 @@ pragma solidity ^0.8.0;
 
 import "./ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DosuInvite is ERC721 {
+contract DosuInvite is ERC721, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
-  address public treasure;
-  uint public txFeeAmount;
-  uint public totalInvites;
-  
-  mapping(address => bool) public excludedList;
+  uint256 public constant MAX_INVITES_SUPPLY = 1000;
 
-  constructor(
-    address _treasure, 
-    uint _txFeeAmount,
-    uint _totalInvites
-  ) ERC721("Dosu Invites", "DOSU") {
-    treasure = _treasure;
-    txFeeAmount = _txFeeAmount;
-    totalInvites = _totalInvites;
+  mapping(address => bool) public whitelist;
+  mapping(address => uint256) public ownedTokenByAddress;
 
-    excludedList[_treasure] = true; 
-    _mint(treasure, 0);
+  struct Invite {
+    address ethAddress;
+    uint256 tokenId;
   }
 
-  function setExcluded(address excluded, bool status) external {
-    require(msg.sender == treasure, "treasure only");
-    excludedList[excluded] = status;
-  }
+  event Mint(address to, uint256 tokenId);
 
-  function mint(address _to) public {
-    require(balanceOf(_to) >= 1, "This address already have an invite");
+  Invite[] internal mintedInvites;
+
+  constructor() ERC721("Dosu Invites", "DOSU") {}
+
+  function mint(address _to) public  {
+    require(whitelist[_to] == true, "This address is not whitelisted");
+    require(balanceOf(_to) == 0, "This address is already have an invite");
+    require(_tokenIds.current() <= MAX_INVITES_SUPPLY, "No invites left");
     
     _tokenIds.increment();
 
     uint256 newInviteId = _tokenIds.current();
     _mint(_to, newInviteId);
+
+    emit Mint(_to, newInviteId);
+
+    Invite memory invite = Invite({tokenId: newInviteId, ethAddress: _to});
+    mintedInvites.push(invite);
+    ownedTokenByAddress[_to] = newInviteId;
   }
 
-  function transferFrom(
-    address from, 
-    address to, 
-    uint256 tokenId
-  ) public payable override {
-     require(
-       _isApprovedOrOwner(_msgSender(), tokenId), 
-       "ERC721: transfer caller is not owner nor approved"
-     );
-     if(excludedList[from] == false) {
-      _payTxFee(from);
-     }
-     _transfer(from, to, tokenId);
+  function checkTokenId(address _owner) public view returns(uint256) {
+    return ownedTokenByAddress[_owner];
   }
 
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId
-   ) public payable override {
-     if(excludedList[from] == false) {
-       _payTxFee(from);
-     }
-     safeTransferFrom(from, to, tokenId, "");
-   }
-
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId,
-    bytes memory _data
-  ) public payable override {
-    require(
-      _isApprovedOrOwner(_msgSender(), tokenId), 
-      "ERC721: transfer caller is not owner nor approved"
-    );
-    if(excludedList[from] == false) {
-      _payTxFee(from);
-    }
-    _safeTransfer(from, to, tokenId, _data);
+  function whitelistAddress(address _user) public onlyOwner {
+    whitelist[_user] = true;
   }
 
-  function _payTxFee(address from) internal {
-    payable(from).transfer(txFeeAmount);
+  function getMintedInvites() public view returns( Invite[] memory){
+    return mintedInvites;
   }
 }
