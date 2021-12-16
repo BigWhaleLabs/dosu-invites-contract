@@ -27,7 +27,7 @@ contract DosuInvite is ERC721, Ownable {
 
   function mint(address _to) public  {
     require(whitelist[_to] == true, "This address is not whitelisted");
-    require(balanceOf(_to) == 0, "This address is already have an invite");
+    require(balanceOf(_to) == 0, "This address already has an invite");
     require(_tokenIds.current() <= MAX_INVITES_SUPPLY, "No invites left");
     
     _tokenIds.increment();
@@ -50,7 +50,7 @@ contract DosuInvite is ERC721, Ownable {
     whitelist[_user] = true;
   }
 
-  function getMintedInvites() public view returns( Invite[] memory){
+  function getMintedInvites() public view returns(Invite[] memory){
     return mintedInvites;
   }
 }
