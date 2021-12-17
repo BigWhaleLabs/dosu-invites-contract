@@ -52,7 +52,7 @@ contract DosuInvite is ERC721, Ownable {
     whitelist[_user] = true;
   }
 
-  function getMintedInvites() public view returns (Invite[] memory) {
+  function getMintedInvites() public view returns(Invite[] memory){
     return mintedInvites;
   }
 }
