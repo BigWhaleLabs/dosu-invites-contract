@@ -23,13 +23,15 @@ contract DosuInvite is ERC721, Ownable {
 
   Invite[] internal mintedInvites;
 
+  // solhint-disable-next-line
   constructor() ERC721("Dosu Invites", "DOSU") {}
 
-  function mint(address _to) public  {
+  function mint(address _to) public {
     require(whitelist[_to] == true, "This address is not whitelisted");
+    // solhint-disable-next-line
     require(balanceOf(_to) == 0, "This address is already have an invite");
     require(_tokenIds.current() <= MAX_INVITES_SUPPLY, "No invites left");
-    
+
     _tokenIds.increment();
 
     uint256 newInviteId = _tokenIds.current();
@@ -42,7 +44,7 @@ contract DosuInvite is ERC721, Ownable {
     ownedTokenByAddress[_to] = newInviteId;
   }
 
-  function checkTokenId(address _owner) public view returns(uint256) {
+  function checkTokenId(address _owner) public view returns (uint256) {
     return ownedTokenByAddress[_owner];
   }
 
@@ -50,7 +52,7 @@ contract DosuInvite is ERC721, Ownable {
     whitelist[_user] = true;
   }
 
-  function getMintedInvites() public view returns( Invite[] memory){
+  function getMintedInvites() public view returns (Invite[] memory) {
     return mintedInvites;
   }
 }
