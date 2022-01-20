@@ -44,7 +44,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     require(tokenId.current() <= MAX_INVITES_SUPPLY, "No invites left");
 
     uint256 _tokenId = tokenId.current();
-    _mint(_to, _tokenId);
+    _safeMint(_to, _tokenId);
     tokenId.increment();
 
     emit Mint(_to, _tokenId);
