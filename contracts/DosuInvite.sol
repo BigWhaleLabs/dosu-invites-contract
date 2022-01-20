@@ -2,13 +2,19 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DosuInvites is ERC721, Ownable {
+contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
   using Counters for Counters.Counter;
+  using Strings for uint256;
   /// @dev token counter
-  Counters.Counter private _tokenIds;
+  Counters.Counter public tokenId;
+
+  /// @dev base URI
+  string public baseURI;
 
   /// @dev max tokens supply
   uint256 public constant MAX_INVITES_SUPPLY = 1000;
@@ -23,7 +29,7 @@ contract DosuInvites is ERC721, Ownable {
     uint256 tokenId;
   }
 
-  event Mint(address to   , uint256 tokenId);
+  event Mint(address to, uint256 tokenId);
 
   /// @dev array of minted invites includes ethAddress and tokenId
   Invite[] internal mintedInvites;
@@ -35,18 +41,57 @@ contract DosuInvites is ERC721, Ownable {
   function mint(address _to) public {
     require(whitelist[_to] == true, "This address is not whitelisted");
     require(balanceOf(_to) == 0, "This address is already have an invite");
-    require(_tokenIds.current() <= MAX_INVITES_SUPPLY, "No invites left");
+    require(tokenId.current() <= MAX_INVITES_SUPPLY, "No invites left");
 
-    _tokenIds.increment();
+    uint256 _tokenId = tokenId.current();
+    _mint(_to, _tokenId);
+    tokenId.increment();
 
-    uint256 newInviteId = _tokenIds.current();
-    _mint(_to, newInviteId);
+    emit Mint(_to, _tokenId);
 
-    emit Mint(_to, newInviteId);
-
-    Invite memory invite = Invite({tokenId: newInviteId, ethAddress: _to});
+    Invite memory invite = Invite({tokenId: _tokenId, ethAddress: _to});
     mintedInvites.push(invite);
-    ownedTokenByAddress[_to] = newInviteId;
+    ownedTokenByAddress[_to] = _tokenId;
+  }
+
+  function tokenURI(uint256 _tokenId)
+    public
+    view
+    virtual
+    override
+    returns (string memory)
+  {
+    require(
+      _exists(_tokenId),
+      "ERC721Metadata: URI query for nonexistent token"
+    );
+
+    string memory _URI = returnURI();
+    string memory _address = _addressToString(ownerOf(_tokenId));
+
+    return
+      string(
+        abi.encodePacked(
+          _URI,
+          "?filename=",
+          _tokenId.toString(),
+          "-",
+          _address,
+          ".png"
+        )
+      );
+  }
+
+  function setBaseURI(string memory _URI) external onlyOwner {
+    baseURI = _URI;
+  }
+
+  function _baseURI() internal view override(ERC721) returns (string memory) {
+    return baseURI;
+  }
+
+  function returnURI() public view returns (string memory) {
+    return baseURI;
   }
 
   /// @notice Mint invite function
@@ -64,7 +109,47 @@ contract DosuInvites is ERC721, Ownable {
 
   /// @notice Function that returns array of Invites structs, includes all minted invites
   /// @return Invite[] array
-  function getMintedInvites() public view returns(Invite[] memory){
+  function getMintedInvites() public view returns (Invite[] memory) {
     return mintedInvites;
+  }
+
+  function _addressToString(address _address)
+    internal
+    pure
+    returns (string memory)
+  {
+    bytes memory s = new bytes(40);
+    for (uint256 i = 0; i < 20; i++) {
+      bytes1 b = bytes1(
+        uint8(uint256(uint160(_address)) / (2**(8 * (19 - i))))
+      );
+      bytes1 hi = bytes1(uint8(b) / 16);
+      bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
+      s[2 * i] = _char(hi);
+      s[2 * i + 1] = _char(lo);
+    }
+    return string(s);
+  }
+
+  function _char(bytes1 b) internal pure returns (bytes1 c) {
+    if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
+    else return bytes1(uint8(b) + 0x57);
+  }
+
+  function _beforeTokenTransfer(
+    address _from,
+    address _to,
+    uint256 _tokenId
+  ) internal override(ERC721, ERC721Enumerable) {
+    super._beforeTokenTransfer(_from, _to, _tokenId);
+  }
+
+  function supportsInterface(bytes4 _interfaceId)
+    public
+    view
+    override(ERC721, ERC721Enumerable)
+    returns (bool)
+  {
+    return super.supportsInterface(_interfaceId);
   }
 }
