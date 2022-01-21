@@ -128,7 +128,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
       s[2 * i] = _char(hi);
       s[2 * i + 1] = _char(lo);
     }
-    return string(s);
+    return string(abi.encodePacked("0x", s));
   }
 
   function _char(bytes1 b) internal pure returns (bytes1 c) {
