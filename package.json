@@ -1,5 +1,9 @@
 {
-  "name": "hardhat-project",
+  "name": "dosu-invites-contract",
+  "description": "Dosu Invites contract code",
+  "repository": "https://github.com/BigWhaleLabs/dosu-invites-contract",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "prettier": "prettier --write 'contracts/**/*.sol'"
   },
