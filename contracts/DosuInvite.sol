@@ -66,7 +66,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
       "ERC721Metadata: URI query for nonexistent token"
     );
 
-    string memory _URI = returnURI();
+    string memory _URI = _baseURI();
     string memory _address = _addressToString(ownerOf(_tokenId));
 
     return
@@ -87,10 +87,6 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
   }
 
   function _baseURI() internal view override(ERC721) returns (string memory) {
-    return baseURI;
-  }
-
-  function returnURI() public view returns (string memory) {
     return baseURI;
   }
 
