@@ -2,9 +2,14 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
+import { addressToString } from "./helpers";
+
 describe("DosuInvite", async function () {
   let admin, artist, user1, user2;
   let dosuInvite;
+
+  const URI_MOCK =
+    "https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac";
 
   beforeEach(async () => {
     [admin, artist, user1, user2] = await ethers.getSigners();
@@ -12,36 +17,36 @@ describe("DosuInvite", async function () {
     dosuInvite = await DosuInvite.deploy();
     await dosuInvite.deployed();
   });
+
+  it("Should set the baseURI", async () => {
+    await dosuInvite.setBaseURI(URI_MOCK);
+    const baseURI = await dosuInvite.baseURI();
+
+    expect(baseURI).to.equal(URI_MOCK);
+  });
+
   it("Should mint an invite", async function () {
     await dosuInvite.whitelistAddress(user1.address);
     await dosuInvite.mint(user1.address);
 
     const balanceUser1 = await dosuInvite.balanceOf(user1.address);
-    console.log("balanceUser1", balanceUser1.toString());
 
     expect(balanceUser1.toString()).to.equal("1");
   });
 
-  it("Should set the baseURI", async () => {
-    await dosuInvite.setBaseURI(
-      "https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac"
-    );
+  it("Should return a valid tokenURI", async () => {
+    await dosuInvite.setBaseURI(URI_MOCK);
     await dosuInvite.whitelistAddress(user1.address);
     await dosuInvite.mint(user1.address);
-    const owner = await dosuInvite.ownerOf(0);
-    console.log("owner", owner);
-    const baseURI = await dosuInvite.returnURI();
-    console.log("baseURI", baseURI);
-  });
 
-  it("Should return tokenURI", async () => {
-    await dosuInvite.setBaseURI(
-      "https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac"
-    );
-    await dosuInvite.whitelistAddress(user1.address);
-    await dosuInvite.mint(user1.address);
-    const tokenURI = await dosuInvite.tokenURI(0);
-    console.log("tokenURI", tokenURI);
+    const TOKEN_ID = 0;
+    const baseURI = await dosuInvite.baseURI();
+    const tokenURI = await dosuInvite.tokenURI(TOKEN_ID);
+    const address = addressToString(user1.address);
+
+    const expectedURI = `${baseURI}?filename=${TOKEN_ID}-${address}.png`;
+
+    expect(tokenURI).to.equal(expectedURI);
   });
 
   it("Should revert mint execution with whitelist exeption", async function () {
@@ -51,6 +56,8 @@ describe("DosuInvite", async function () {
   });
 
   it("Should revert execution with exeption", async function () {
+    await dosuInvite.whitelistAddress(user1.address);
+    await dosuInvite.mint(user1.address);
     await expect(dosuInvite.mint(user1.address)).to.be.revertedWith(
       "This address is already have an invite"
     );
