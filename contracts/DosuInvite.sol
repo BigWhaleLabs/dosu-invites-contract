@@ -54,7 +54,6 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
 
     function tokenURI(uint256 _tokenId, string memory _cid)
         public
-        virtual
         returns (string memory)
     {
         require(

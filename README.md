@@ -35,9 +35,8 @@ To try out Etherscan verification, you first need to deploy a contract to an Eth
 4. Also setup [Alchemy Project][alchemyapps] (Billing information required)
 5. Create `.env` with the environment variables listed below
 6. With a valid .env file in place, first deploy your contract: `yarn deploy`
-7. Copy the deployment ETH address
-8. Go to `https://ropsten.etherscan.io/address/{yourAddress}`, wait until contract creation is finished, copy the contract's address
-9. Paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+7. Wait until contract creation is finished, copy the contract's address. Now you can check it here: `https://ropsten.etherscan.io/address/{contractAddress}`
+8. Paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
 
 ```shell
 yarn hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS
