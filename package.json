@@ -5,7 +5,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prettier": "prettier --write 'contracts/**/*.sol'"
+    "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
+    "pretty": "prettier --check src",
+    "lint": "yarn pretty && eslint --max-warnings 0 --ext ts,tsx,json src && yarn ethLint",
+    "ethLint": "yarn solhint 'contracts/**/*.sol'",
+    "test": "yarn hardhat test"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
