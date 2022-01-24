@@ -2,9 +2,11 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 
+// eslint-disable-next-line node/no-missing-import
 import { addressToString } from './helpers'
 
 describe('DosuInvite', async function () {
+  // eslint-disable-next-line no-unused-vars
   let admin, artist, user1, user2
   let dosuInvite
 
