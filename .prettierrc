@@ -13,7 +13,7 @@
       }
     },
     {
-      "files": ["*.ts"],
+      "files": ["*.ts", "*.js"],
       "options": {
         "trailingComma": "es5",
         "tabWidth": 2,
