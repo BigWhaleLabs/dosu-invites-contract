@@ -42,6 +42,8 @@ To try out Etherscan verification, you first need to deploy a contract to an Eth
 yarn hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
 
+9. Get your address and go to `https://ropsten.etherscan.io/address/{yourAddress}`, wait until contract creation is finished
+
 And you should be good to go! Feel free to fork and submit pull requests.
 
 ## Environment variables
