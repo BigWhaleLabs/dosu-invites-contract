@@ -36,7 +36,7 @@ To try out Etherscan verification, you first need to deploy a contract to an Eth
 5. Create `.env` with the environment variables listed below
 6. Get ETH for your wallet from the [faucet](https://app.mycrypto.com/faucet). You need test money to deploy the contract
 7. With a valid .env file in place, first deploy your contract: `yarn deploy`
-8. Wait until contract creation is finished, copy the contract's address. Now you can check it here: `https://ropsten.etherscan.io/address/{contractAddress}`
+8. Wait until contract creation is finished (it might take up to two hours), copy the contract's address. Now you can check it here: `https://ropsten.etherscan.io/address/{contractAddress}`
 9. Paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
 
 ```shell
