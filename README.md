@@ -29,18 +29,34 @@ npx solhint 'contracts/**/*.sol' --fix
 
 To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-yarn hardhat run --network ropsten scripts/deploy.ts
-```
-
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+1. Clone this repo: `git clone https://github.com/BigWhaleLabs/dosu-invites-contract`
+2. Run `yarn` in the root folder
+3. Setup the [etherscan api project][etherscanapi]
+4. Also setup [Alchemy Project][alchemyapps] (Billing information required)
+5. Create `.env` with the environment variables listed below
+6. With a valid .env file in place, first deploy your contract: `yarn deploy`
+7. Copy the deployment ETH address
+8. Paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
 
 ```shell
 yarn hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
 
+And you should be good to go! Feel free to fork and submit pull requests.
+
+## Environment variables
+
+| Name                | Description                                                                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ETHERSCAN_API_KEY` | You can get one [on etherscan][etherscanapi]                                                                                                |
+| `ROPSTEN_URL`       | URL of the node URL (eg from [Alchemy][alchemyapps])                                                                                        |
+| `PRIVATE_KEY`       | Key of the account which will send the deployment transaction. You can get one inside the MetaMask -> Account Details -> Export Private Key |
+
+Also, please, consider looking at `.env.sample`.
+
 # Performance optimizations
 
 For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+
+[alchemyapps]: https://dashboard.alchemyapi.io/apps/
+[etherscanapi]: https://etherscan.io/myapikey
