@@ -55,7 +55,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     /// @notice Set tokenURI for tokenId function
     /// @param _tokenId is the frame number
     /// @param _cid is part of the link to the frame inside IPFS
-    function tokenURI(uint256 _tokenId, string memory _cid)
+    function setTokenURI(uint256 _tokenId, string memory _cid)
         public
         returns (string memory)
     {
