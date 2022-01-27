@@ -13,6 +13,9 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     /// @dev token counter
     Counters.Counter public tokenId;
 
+    /// @dev base URI; looks like /ipns/<hash>
+    string public baseURI;
+
     /// @dev max tokens supply
     uint256 public constant MAX_INVITES_SUPPLY = 1000;
 
@@ -23,14 +26,13 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
 
     struct Invite {
         address ethAddress;
-        string tokenURI;
+        uint256 tokenId;
     }
 
     event Mint(address to, uint256 tokenId);
 
-    /// @dev mapping {[tokenId: uint256]: Invite}
-    mapping(uint256 => Invite) public mintedInvites;
-    uint256 public addressRegistryCount;
+    /// @dev array of minted invites includes ethAddress and tokenId
+    Invite[] internal mintedInvites;
 
     constructor() ERC721("Dosu Invites", "DOSU") {}
 
@@ -47,16 +49,16 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
 
         emit Mint(_to, _tokenId);
 
-        mintedInvites[_tokenId] = Invite({ethAddress: _to, tokenURI: ""});
-        addressRegistryCount++;
+        Invite memory invite = Invite({tokenId: _tokenId, ethAddress: _to});
+        mintedInvites.push(invite);
         ownedTokenByAddress[_to] = _tokenId;
     }
 
-    /// @notice Set tokenURI for tokenId function
-    /// @param _tokenId is the frame number
-    /// @param _cid is part of the link to the frame inside IPFS
-    function setTokenURI(uint256 _tokenId, string memory _cid)
+    function tokenURI(uint256 _tokenId)
         public
+        view
+        virtual
+        override
         returns (string memory)
     {
         require(
@@ -64,21 +66,28 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        string memory uri = string(
-            abi.encodePacked(
-                "https://ipfs.io/ipfs/",
-                _cid,
-                "/",
-                _tokenId.toString(),
-                "-",
-                _addressToString(ownerOf(_tokenId)),
-                ".png"
-            )
-        );
+        string memory _URI = _baseURI();
+        string memory _address = _addressToString(ownerOf(_tokenId));
 
-        mintedInvites[_tokenId].tokenURI = uri;
+        return
+            string(
+                abi.encodePacked(
+                    _URI,
+                    "/",
+                    _tokenId.toString(),
+                    "-",
+                    _address,
+                    ".png"
+                )
+            );
+    }
 
-        return uri;
+    function setBaseURI(string memory _URI) external onlyOwner {
+        baseURI = _URI;
+    }
+
+    function _baseURI() internal view override(ERC721) returns (string memory) {
+        return baseURI;
     }
 
     /// @notice Mint invite function
@@ -95,16 +104,9 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     }
 
     /// @notice Function that returns array of Invites structs, includes all minted invites
-    /// @dev Converting {uint: Invite} mapping into Invite[]
     /// @return Invite[] array
     function getMintedInvites() public view returns (Invite[] memory) {
-        Invite[] memory toReturn = new Invite[](addressRegistryCount);
-
-        for (uint256 i = 0; i < addressRegistryCount; i++) {
-            toReturn[i] = mintedInvites[i];
-        }
-
-        return toReturn;
+        return mintedInvites;
     }
 
     function _addressToString(address _address)
