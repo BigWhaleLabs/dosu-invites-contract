@@ -44,6 +44,8 @@ yarn hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS
 
 Wait for verification result
 
+9. Set base URI of the contract on etherscan (take base URI from the `dosu-invites-backend`)
+
 And you should be good to go! Feel free to fork and submit pull requests.
 
 ## Environment variables
