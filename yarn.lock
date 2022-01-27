@@ -3963,7 +3963,7 @@ ethereumjs-util@6.2.0:
     ethjs-util "0.1.6"
     keccak "^2.0.0"
     rlp "^2.2.3"
-    secp256k1 "^3.0.1"
+    secp256k1 "^4.0.1"
 
 ethereumjs-util@6.2.1, ethereumjs-util@^6.0.0, ethereumjs-util@^6.1.0, ethereumjs-util@^6.2.0:
   version "6.2.1"
@@ -8056,20 +8056,6 @@ scryptsy@^1.2.1:
   integrity sha1-oyJfpLJST4AnAHYeKFW987LZIWM=
   dependencies:
     pbkdf2 "^3.0.3"
-
-secp256k1@^3.0.1:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/secp256k1/-/secp256k1-3.8.0.tgz#28f59f4b01dbee9575f56a47034b7d2e3b3b352d"
-  integrity sha512-k5ke5avRZbtl9Tqx/SA7CbY3NF6Ro+Sj9cZxezFzuBlLDmyqPiL8hJJ+EmzD8Ig4LUDByHJ3/iPOVoRixs/hmw==
-  dependencies:
-    bindings "^1.5.0"
-    bip66 "^1.1.5"
-    bn.js "^4.11.8"
-    create-hash "^1.2.0"
-    drbg.js "^1.0.1"
-    elliptic "^6.5.2"
-    nan "^2.14.0"
-    safe-buffer "^5.1.2"
 
 secp256k1@^4.0.1:
   version "4.0.2"
