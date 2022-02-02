@@ -34,7 +34,10 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     /// @dev array of minted invites includes ethAddress and tokenId
     Invite[] internal mintedInvites;
 
-    constructor() ERC721("Dosu Invites", "DOSU") {}
+    /// @dev starts tokenId from 1
+    constructor() ERC721("Dosu Invites", "DOSU") {
+        tokenId.increment();
+    }
 
     /// @notice Mint invite function
     /// @param _to Recipient address
@@ -90,7 +93,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
         return baseURI;
     }
 
-    /// @notice Mint invite function
+    /// @notice Return tokenId of given address
     /// @param _owner Owner address
     /// @return Token id that correspond to passed address
     function checkTokenId(address _owner) public view returns (uint256) {

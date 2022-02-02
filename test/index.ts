@@ -11,7 +11,7 @@ describe('DosuInvite', async function () {
   let dosuInvite
 
   const URI_MOCK =
-    'https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac'
+    '/ipns/k51qzi5uqu5dlsba4u2pf5z1il1vx7oy6kf6k84dqsj021854wfsuo5825xtzf'
 
   beforeEach(async () => {
     ;[admin, artist, user1, user2] = await ethers.getSigners()
@@ -41,12 +41,13 @@ describe('DosuInvite', async function () {
     await dosuInvite.whitelistAddress(user1.address)
     await dosuInvite.mint(user1.address)
 
-    const TOKEN_ID = 0
+    const TOKEN_ID = 1
     const baseURI = await dosuInvite.baseURI()
     const tokenURI = await dosuInvite.tokenURI(TOKEN_ID)
     const address = addressToString(user1.address)
 
-    const expectedURI = `${baseURI}?filename=${TOKEN_ID}-${address}.png`
+    // /ipns/<hash>/{tokenId}-{ethAddress}.png
+    const expectedURI = `${baseURI}/{TOKEN_ID}-${address}.png`
 
     expect(tokenURI).to.equal(expectedURI)
   })
