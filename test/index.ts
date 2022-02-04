@@ -28,7 +28,7 @@ describe('DosuInvite', async function () {
   })
 
   it('Should mint an invite', async function () {
-    await dosuInvite.whitelistAddress(user1.address)
+    await dosuInvite.allowlistAddress(user1.address)
     await dosuInvite.mint(user1.address)
 
     const balanceUser1 = await dosuInvite.balanceOf(user1.address)
@@ -38,7 +38,7 @@ describe('DosuInvite', async function () {
 
   it('Should return a valid tokenURI', async () => {
     await dosuInvite.setBaseURI(URI_MOCK)
-    await dosuInvite.whitelistAddress(user1.address)
+    await dosuInvite.allowlistAddress(user1.address)
     await dosuInvite.mint(user1.address)
 
     const TOKEN_ID = 1
@@ -52,14 +52,14 @@ describe('DosuInvite', async function () {
     expect(tokenURI).to.equal(expectedURI)
   })
 
-  it('Should revert mint execution with whitelist exeption', async function () {
+  it('Should revert mint execution with allowlist exeption', async function () {
     await expect(dosuInvite.mint(user1.address)).to.be.revertedWith(
-      'This address is not whitelisted'
+      'This address is not allowlisted'
     )
   })
 
   it('Should revert execution with exeption', async function () {
-    await dosuInvite.whitelistAddress(user1.address)
+    await dosuInvite.allowlistAddress(user1.address)
     await dosuInvite.mint(user1.address)
     await expect(dosuInvite.mint(user1.address)).to.be.revertedWith(
       'This address is already have an invite'

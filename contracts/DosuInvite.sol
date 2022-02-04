@@ -19,8 +19,8 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     /// @dev max tokens supply
     uint256 public constant MAX_INVITES_SUPPLY = 1000;
 
-    /// @dev addresses whitelist that allowed to mint
-    mapping(address => bool) public whitelist;
+    /// @dev addresses that are allowed to mint
+    mapping(address => bool) public allowlist;
     /// @dev list of owned tokenId by address
     mapping(address => uint256) public ownedTokenByAddress;
 
@@ -40,7 +40,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     /// @notice Mint invite function
     /// @param _to Recipient address
     function mint(address _to) public {
-        require(whitelist[_to] == true, "This address is not whitelisted");
+        require(allowlist[_to] == true, "This address is not allowlisted");
         require(balanceOf(_to) == 0, "This address already has an invite");
         require(tokenId.current() <= MAX_INVITES_SUPPLY, "No invites left");
 
@@ -98,10 +98,10 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
         return ownedTokenByAddress[_owner];
     }
 
-    /// @notice Function for adding address to the whitelist
+    /// @notice Function for adding address to the allowlist
     /// @param _user Owner address
-    function whitelistAddress(address _user) public onlyOwner {
-        whitelist[_user] = true;
+    function allowlistAddress(address _user) public onlyOwner {
+        allowlist[_user] = true;
     }
 
     /// @notice Function that returns array of Invites structs, includes all minted invites
