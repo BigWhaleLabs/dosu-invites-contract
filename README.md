@@ -1,6 +1,6 @@
 # invites.dosu.io contract code
 
-> The last version of the contract is deployed here: https://ropsten.etherscan.io/address/0x8D7FA391c63c8aC999a0830095B661d5243969BA
+> The last version of the contract is deployed here: https://ropsten.etherscan.io/address/0x82A7865135c293Ce1B960000Be9ff054A7480874
 
 # Etherscan verification
 
