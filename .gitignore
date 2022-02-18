@@ -9,6 +9,9 @@ typechain
 cache
 artifacts
 
+# logs
+*.log
+
 # yarn
 .pnp.*
 .yarn/*
