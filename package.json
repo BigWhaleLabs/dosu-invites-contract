@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "deploy": "yarn hardhat run --network polygon scripts/deploy.ts",
+    "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
     "pretty": "prettier --check src",
     "lint": "yarn pretty && eslint --max-warnings 0 --ext ts,tsx,json src && yarn ethLint",
     "ethLint": "yarn solhint 'contracts/**/*.sol'",

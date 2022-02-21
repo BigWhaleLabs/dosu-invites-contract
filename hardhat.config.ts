@@ -9,12 +9,12 @@ import 'solidity-coverage'
 
 dotenv.config()
 
-const { PRIVATE_KEY, POLYGON_SCAN_API_KEY, POLYGON_URL, REPORT_GAS } = cleanEnv(
+const { PRIVATE_KEY, ETHERSCAN_API_KEY, ROPSTEN_URL, REPORT_GAS } = cleanEnv(
   process.env,
   {
     PRIVATE_KEY: str(),
-    POLYGON_URL: str(),
-    POLYGON_SCAN_API_KEY: str(),
+    ROPSTEN_URL: str(),
+    ETHERSCAN_API_KEY: str(),
     REPORT_GAS: bool({ default: true }),
   }
 )
@@ -22,8 +22,8 @@ const { PRIVATE_KEY, POLYGON_SCAN_API_KEY, POLYGON_URL, REPORT_GAS } = cleanEnv(
 const config: HardhatUserConfig = {
   solidity: '0.8.4',
   networks: {
-    polygon: {
-      url: POLYGON_URL,
+    ropsten: {
+      url: ROPSTEN_URL,
       accounts: [PRIVATE_KEY],
     },
   },
@@ -32,10 +32,7 @@ const config: HardhatUserConfig = {
     currency: 'USD',
   },
   etherscan: {
-    apiKey: {
-      polygon: POLYGON_SCAN_API_KEY,
-      polygonMumbai: POLYGON_SCAN_API_KEY,
-    },
+    apiKey: ETHERSCAN_API_KEY,
   },
   typechain: {
     outDir: 'typechain',
