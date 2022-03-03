@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -19,10 +20,12 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
   /// @dev max tokens supply
   uint256 public constant MAX_INVITES_SUPPLY = 1000;
 
-  /// @dev addresses whitelist that allowed to mint
-  mapping(address => bool) public whitelist;
+  /// @dev whitelist Merkle root
+  bytes32 public merkleRoot;
   /// @dev list of owned tokenId by address
   mapping(address => uint256) public ownedTokenByAddress;
+
+  mapping(address => bool) public whitelistClaimed;
 
   struct Invite {
     address ethAddress;
@@ -38,8 +41,14 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
 
   /// @notice Mint invite function
   /// @param _to Recipient address
-  function mint(address _to) public {
-    require(whitelist[_to] == true, "This address is not whitelisted");
+  /// @param _to Recipient address
+  function mint(address _to, bytes32[] calldata _merkleProof) public {
+    require(!whitelistClaimed[msg.sender], "Address already claimed");
+    bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+    require(
+      MerkleProof.verify(_merkleProof, merkleRoot, leaf),
+      "Invalid Merkle proof"
+    );
     require(balanceOf(_to) == 0, "This address is already have an invite");
     require(tokenId.current() <= MAX_INVITES_SUPPLY, "No invites left");
 
@@ -52,6 +61,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     Invite memory invite = Invite({tokenId: _tokenId, ethAddress: _to});
     mintedInvites.push(invite);
     ownedTokenByAddress[_to] = _tokenId;
+    whitelistClaimed[msg.sender] = true;
   }
 
   function tokenURI(uint256 _tokenId)
@@ -66,13 +76,13 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
       "ERC721Metadata: URI query for nonexistent token"
     );
 
-    string memory _URI = _baseURI();
+    string memory _uri = _baseURI();
     string memory _address = _addressToString(ownerOf(_tokenId));
 
     return
       string(
         abi.encodePacked(
-          _URI,
+          _uri,
           "?filename=",
           _tokenId.toString(),
           "-",
@@ -82,8 +92,8 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
       );
   }
 
-  function setBaseURI(string memory _URI) external onlyOwner {
-    baseURI = _URI;
+  function setBaseURI(string memory _uri) external onlyOwner {
+    baseURI = _uri;
   }
 
   function _baseURI() internal view override(ERC721) returns (string memory) {
@@ -95,12 +105,6 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
   /// @return Token id that correspond to passed address
   function checkTokenId(address _owner) public view returns (uint256) {
     return ownedTokenByAddress[_owner];
-  }
-
-  /// @notice Function for adding address to the whitelist
-  /// @param _user Owner address
-  function whitelistAddress(address _user) public onlyOwner {
-    whitelist[_user] = true;
   }
 
   /// @notice Function that returns array of Invites structs, includes all minted invites
