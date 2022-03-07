@@ -92,6 +92,10 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
       );
   }
 
+  function setMerkleRoot(bytes32 _root) external onlyOwner {
+    merkleRoot = _root;
+  }
+
   function setBaseURI(string memory _uri) external onlyOwner {
     baseURI = _uri;
   }
