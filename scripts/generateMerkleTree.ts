@@ -4,7 +4,7 @@ import keccak256 from "keccak256";
 
 function generateMerkleTree(data: Array<string>): MerkleTree {
   const leafNodes = data.map((addr) => keccak256(addr));
-  return new MerkleTree(leafNodes, keccak256);
+  return new MerkleTree(leafNodes, keccak256, { sortPairs: true });
 }
 
 const OUT_FILE_PATH = "data/whitelist.json";
