@@ -1,3 +1,4 @@
+import fs from "fs";
 import { ethers } from "hardhat";
 
 async function main() {
@@ -13,6 +14,7 @@ async function main() {
   await dosuInvite.deployed();
 
   console.log("DosuInvite deployed to:", dosuInvite.address);
+  fs.appendFileSync(".env", `DI_ADDRESS=${dosuInvite.address}`);
 }
 
 main().catch((error) => {
