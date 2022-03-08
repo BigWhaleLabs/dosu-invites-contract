@@ -40,27 +40,28 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
   constructor() ERC721("Dosu Invites", "DOSU") {}
 
   /// @notice Mint invite function
-  /// @param _to Recipient address
-  /// @param _to Recipient address
-  function mint(address _to, bytes32[] calldata _merkleProof) public {
+  function mint(bytes32[] calldata _merkleProof) public {
     require(!whitelistClaimed[msg.sender], "Address already claimed");
     bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
     require(
       MerkleProof.verify(_merkleProof, merkleRoot, leaf),
       "Invalid Merkle proof"
     );
-    require(balanceOf(_to) == 0, "This address is already have an invite");
+    require(
+      balanceOf(msg.sender) == 0,
+      "This address is already have an invite"
+    );
     require(tokenId.current() <= MAX_INVITES_SUPPLY, "No invites left");
 
     uint256 _tokenId = tokenId.current();
-    _safeMint(_to, _tokenId);
+    _safeMint(msg.sender, _tokenId);
     tokenId.increment();
 
-    emit Mint(_to, _tokenId);
+    emit Mint(msg.sender, _tokenId);
 
-    Invite memory invite = Invite({tokenId: _tokenId, ethAddress: _to});
+    Invite memory invite = Invite({tokenId: _tokenId, ethAddress: msg.sender});
     mintedInvites.push(invite);
-    ownedTokenByAddress[_to] = _tokenId;
+    ownedTokenByAddress[msg.sender] = _tokenId;
     whitelistClaimed[msg.sender] = true;
   }
 
