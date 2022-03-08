@@ -1,65 +1,109 @@
-// @ts-nocheck
 import { expect } from "chai";
 import { ethers } from "hardhat";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { DosuInvites } from "../typechain";
+
+import MerkleTree from "../src/merkleTree";
 
 import { addressToString } from "./helpers";
 
-describe("DosuInvite", async function () {
-  let admin, artist, user1, user2;
-  let dosuInvite;
+const MAX_TREE_SIZE_TO_TEST = 9;
+const ZERO_BYTES =
+  "0x0000000000000000000000000000000000000000000000000000000000000000";
+
+describe("DosuInvites", async function () {
+  let contract: DosuInvites;
+  let contractAsUser: DosuInvites;
+  let contractAsOwner: DosuInvites;
+
+  let accounts: SignerWithAddress[];
+  let addrs: string[];
+  let deployer: SignerWithAddress;
+  let user: SignerWithAddress;
+  let owner: SignerWithAddress;
+  let user1: SignerWithAddress;
+  let user2: SignerWithAddress;
+
+  let whitelistTree: MerkleTree;
 
   const URI_MOCK =
     "https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac";
 
   beforeEach(async () => {
-    [admin, artist, user1, user2] = await ethers.getSigners();
-    const DosuInvite = await ethers.getContractFactory("DosuInvites");
-    dosuInvite = await DosuInvite.deploy();
-    await dosuInvite.deployed();
+    accounts = await ethers.getSigners();
+    [deployer, user, owner, user1, user2] = accounts;
+
+    const factory = await ethers.getContractFactory("DosuInvites");
+    contract = await factory.deploy();
+    await contract.deployed();
+
+    await (await contract.transferOwnership(owner.address)).wait();
+    contractAsUser = contract.connect(user);
+    contractAsOwner = contract.connect(owner);
+    await contract.deployed();
+
+    addrs = accounts.map((a) => a.address);
+
+    whitelistTree = new MerkleTree([addrs[0], addrs[1]]);
   });
 
-  it("Should set the baseURI", async () => {
-    await dosuInvite.setBaseURI(URI_MOCK);
-    const baseURI = await dosuInvite.baseURI();
-
-    expect(baseURI).to.equal(URI_MOCK);
+  it("setPresaleMerkleRoot", async () => {
+    await contractAsOwner.setMerkleRoot(whitelistTree.getRoot());
   });
 
-  it("Should mint an invite", async function () {
-    await dosuInvite.whitelistAddress(user1.address);
-    await dosuInvite.mint(user1.address);
-
-    const balanceUser1 = await dosuInvite.balanceOf(user1.address);
-
-    expect(balanceUser1.toString()).to.equal("1");
+  it("setBaseURI", async () => {
+    await contractAsOwner.setBaseURI(URI_MOCK);
+    expect(await contractAsOwner.baseURI()).to.equal(URI_MOCK);
   });
 
-  it("Should return a valid tokenURI", async () => {
-    await dosuInvite.setBaseURI(URI_MOCK);
-    await dosuInvite.whitelistAddress(user1.address);
-    await dosuInvite.mint(user1.address);
+  describe("whitelist minting", async () => {
+    let leaves: any;
 
-    const TOKEN_ID = 0;
-    const baseURI = await dosuInvite.baseURI();
-    const tokenURI = await dosuInvite.tokenURI(TOKEN_ID);
-    const address = addressToString(user1.address);
+    before(async () => {
+      leaves = [
+        addrs[0],
+        addrs[1],
+        addrs[2],
+        addrs[3],
+        addrs[4],
+        addrs[5],
+        addrs[6],
+        addrs[7],
+        addrs[8],
+        addrs[9],
+      ];
+      if (leaves.length < MAX_TREE_SIZE_TO_TEST) {
+        throw new Error("Invalid MAX_TREE_SIZE_TO_TEST");
+      }
+    });
+    beforeEach(async () => {
+      await contractAsOwner.setMerkleRoot(whitelistTree.getRoot());
+    });
+    it("succesfully whitelist minting", async () => {
+      const contractAsAccount0 = contract.connect(accounts[0]);
 
-    const expectedURI = `${baseURI}?filename=${TOKEN_ID}-${address}.png`;
-
-    expect(tokenURI).to.equal(expectedURI);
-  });
-
-  it("Should revert mint execution with whitelist exeption", async function () {
-    await expect(dosuInvite.mint(user1.address)).to.be.revertedWith(
-      "This address is not whitelisted"
-    );
-  });
-
-  it("Should revert execution with exeption", async function () {
-    await dosuInvite.whitelistAddress(user1.address);
-    await dosuInvite.mint(user1.address);
-    await expect(dosuInvite.mint(user1.address)).to.be.revertedWith(
-      "This address is already have an invite"
-    );
+      await contractAsAccount0.mint(whitelistTree.getProof(addrs[0]));
+      expect(await contract.totalSupply()).to.equal(1);
+    });
+    it("cannot mint if Merkle root is not set", async function () {
+      await contractAsOwner.setMerkleRoot(ZERO_BYTES);
+      await expect(
+        contract.mint(whitelistTree.getProof(addrs[0]))
+      ).to.be.revertedWith("Invalid Merkle proof");
+    });
+    it("cannot mint if Merkle root is set to the root of a different tree", async function () {
+      const newTree = new MerkleTree([addrs[4], addrs[5]]);
+      await contractAsOwner.setMerkleRoot(newTree.getRoot());
+      await expect(
+        contract.mint(whitelistTree.getProof(addrs[0]))
+      ).to.be.revertedWith("Invalid Merkle proof");
+    });
+    it("cannot mint with a proof that does not match the sender", async function () {
+      const contractFromAccount1 = contract.connect(accounts[1]);
+      const proof = whitelistTree.getProof(addrs[0]);
+      await expect(contractFromAccount1.mint(proof)).to.be.revertedWith(
+        "Invalid Merkle proof"
+      );
+    });
   });
 });
