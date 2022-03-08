@@ -14,7 +14,7 @@ async function main() {
   await dosuInvite.deployed();
 
   console.log("DosuInvite deployed to:", dosuInvite.address);
-  fs.appendFileSync(".env", `DI_ADDRESS=${dosuInvite.address}`);
+  fs.appendFileSync(".env", `CONTRACT_ADDRESS=${dosuInvite.address}`);
 }
 
 main().catch((error) => {
