@@ -20,12 +20,12 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     /// @dev max tokens supply
     uint256 public constant MAX_INVITES_SUPPLY = 1000;
 
-    /// @dev whitelist Merkle root
+    /// @dev allowlist Merkle root
     bytes32 public merkleRoot;
     /// @dev list of owned tokenId by address
     mapping(address => uint256) public ownedTokenByAddress;
 
-    mapping(address => bool) public whitelistClaimed;
+    mapping(address => bool) public allowlistClaimed;
 
     struct Invite {
         address ethAddress;
@@ -41,7 +41,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
 
     /// @notice Mint invite function
     function mint(bytes32[] calldata _merkleProof) public {
-        require(!whitelistClaimed[msg.sender], "Address already claimed");
+        require(!allowlistClaimed[msg.sender], "Address already claimed");
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(
             MerkleProof.verify(_merkleProof, merkleRoot, leaf),
@@ -65,7 +65,7 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
         });
         mintedInvites.push(invite);
         ownedTokenByAddress[msg.sender] = _tokenId;
-        whitelistClaimed[msg.sender] = true;
+        allowlistClaimed[msg.sender] = true;
     }
 
     function tokenURI(uint256 _tokenId)
