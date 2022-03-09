@@ -16,6 +16,10 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    'node/no-missing-import': 'off',
+    'node/no-unpublished-import': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'node/no-unsupported-features/es-syntax': [
       'error',
       { ignores: ['modules'] },
