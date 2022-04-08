@@ -15,7 +15,7 @@ const OUT_FILE_PATH = 'data/allowlist.json'
 export default async function setMerkleTreeRoot(contractAddress?: string) {
     const data = JSON.parse(fs.readFileSync(OUT_FILE_PATH).toString())
 
-    const address = contractAddress || 'YOUR CONTRACT ADDRESS'
+    const address = contractAddress || '0x399f4a0a9d6E8f6f4BD019340e4d1bE0C9a742F0'
 
     console.log('\n==== Creating Merkle tree and calculating root... ====')
     const tree = generateMerkleTree(data)
