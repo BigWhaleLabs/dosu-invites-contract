@@ -11,8 +11,11 @@ To try out Etherscan verification, you first need to deploy a contract to an Eth
 3. Setup the [etherscan api project][etherscanapi]
 4. Also setup [Alchemy Project][alchemyapps] (Billing information required)
 5. Create `.env` with the environment variables listed below
+6. Fill `data/allowlist.json` with ETH addresses (31 should be enough)
 6. With a valid .env file in place, first deploy your contract: `yarn deploy`. Please notice, that this costs test money, which you can get at the [faucet](https://app.mycrypto.com/faucet)
-7. Wait until contract creation and code verification are finished
+7. Wait until contract creation and code verification are finished. And wait for Merkle Tree setting is complete
+    - If the contract was created, but the root wasn't set, please take the contract address and set it in the `scripts/setMerkleTreeRoot.ts` instead of `YOUR CONTRACT ADDRESS`
+    - Then run `yarn set-merkle-root` 
 8. `setBaseUri` of the contract on etherscan (take `baseUri` from the `dosu-invites-backend`)
 
 And you should be good to go! Feel free to fork and submit pull requests.

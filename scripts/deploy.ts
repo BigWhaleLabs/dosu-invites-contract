@@ -1,6 +1,7 @@
 import { ethers, run } from 'hardhat'
+import setMerkleTreeRoot from './setMerkleTreeRoot'
 
-async function main() {
+async function deployContract() {
   const [deployer] = await ethers.getSigners()
 
   console.log('Deploying contracts with the account:', deployer.address)
@@ -11,19 +12,23 @@ async function main() {
 
   await dosuInvites.deployed()
 
-  console.log('DosuInvites deployed to:', dosuInvites.address)
+  const address = dosuInvites.address
+
+  console.log('DosuInvites deployed to:', address)
 
   console.log('Wait for 1 minute')
   await new Promise((resolve) => setTimeout(resolve, 60000))
 
   await run('verify:verify', {
-    address: dosuInvites.address,
+    address,
   })
 
   console.log('DosuInvites verified')
+
+  setMerkleTreeRoot(address)
 }
 
-main().catch((error) => {
+deployContract().catch((error) => {
   console.error(error)
   process.exitCode = 1
 })
