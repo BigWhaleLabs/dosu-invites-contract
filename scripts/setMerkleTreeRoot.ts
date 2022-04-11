@@ -7,7 +7,7 @@ import { ContractReceipt, ContractTransaction } from 'ethers'
 
 function generateMerkleTree(data: Array<string>): MerkleTree {
   const leafNodes = data.map((addr) => keccak256(addr))
-  return new MerkleTree(leafNodes, keccak256, { sortLeaves: true })
+  return new MerkleTree(leafNodes, keccak256, { sortPairs: true })
 }
 
 const OUT_FILE_PATH = 'data/allowlist.json'

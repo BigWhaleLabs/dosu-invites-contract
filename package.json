@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
-    "set-merkle-root": "yarn hardhat run --network ropsten scripts/setMerkleTreeRoot.ts",
+    "set-merkle-root": "yarn hardhat run --network ropsten scripts/setMerkleTreeRoot.ts" ,
     "pretty": "prettier --write .",
     "lint": "yarn pretty && eslint --max-warnings 0 --ext ts,tsx,json src && yarn ethLint",
     "ethLint": "yarn solhint 'contracts/**/*.sol'",
