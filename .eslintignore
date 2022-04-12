@@ -2,7 +2,3 @@ node_modules
 artifacts
 cache
 coverage
-
-# Contract types
-types/*.json
-abiTypes/*

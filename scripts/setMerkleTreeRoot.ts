@@ -3,8 +3,6 @@ import fs from 'fs'
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 import { ContractReceipt, ContractTransaction } from 'ethers'
-// eslint-disable-next-line camelcase
-import { InvitesAbi, InvitesAbi__factory } from '../abiTypes/invitesAbi'
 
 function generateMerkleTree(data: Array<string>): MerkleTree {
   const leafNodes = data.map((addr) => keccak256(addr))
