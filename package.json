@@ -11,7 +11,8 @@
     "lint": "yarn pretty && eslint --max-warnings 0 --ext ts,tsx,json src && yarn ethLint",
     "ethLint": "yarn solhint 'contracts/**/*.sol'",
     "compile": "yarn hardhat compile",
-    "test": "yarn hardhat test"
+    "test": "yarn hardhat test",
+    "generate-invites-types": "typechain --target=ethers-v5 'types/invites-abi.json' --out-dir 'abiTypes/invitesAbi'"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",

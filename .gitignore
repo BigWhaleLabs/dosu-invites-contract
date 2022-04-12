@@ -4,8 +4,9 @@ coverage
 coverage.json
 typechain
 .DS_Store
+abiTypes
 
-#Hardhat files
+# Hardhat files
 cache
 artifacts
 
