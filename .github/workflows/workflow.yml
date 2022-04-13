@@ -22,7 +22,7 @@ jobs:
         run: yarn
       - name: Compile code
         run: yarn compile
-      - name: Deploy smart contract
-        run: yarn deploy
       - name: Publish package
         run: npm publish
+      - name: Deploy smart contract
+        run: yarn deploy
