@@ -46,7 +46,7 @@ describe('DosuInvites', async function () {
     whitelistTree = new MerkleTree([addrs[0], addrs[1]])
   })
 
-  it('setPresaleMerkleRoot', async () => {
+  it('setMerkleTreeRoot', async () => {
     await contractAsOwner.setMerkleRoot(whitelistTree.getRoot())
   })
 
@@ -92,15 +92,17 @@ describe('DosuInvites', async function () {
     })
     it('cannot mint if Merkle root is set to the root of a different tree', async function () {
       const newTree = new MerkleTree([addrs[4], addrs[5]])
+
       await contractAsOwner.setMerkleRoot(newTree.getRoot())
       await expect(
         contract.mint(whitelistTree.getProof(addrs[0]))
       ).to.be.revertedWith('Invalid Merkle proof')
     })
     it('cannot mint with a proof that does not match the sender', async function () {
-      const contractFromAccount1 = contract.connect(accounts[1])
+      const contractAsAccount1 = contract.connect(accounts[1])
       const proof = whitelistTree.getProof(addrs[0])
-      await expect(contractFromAccount1.mint(proof)).to.be.revertedWith(
+
+      await expect(contractAsAccount1.mint(proof)).to.be.revertedWith(
         'Invalid Merkle proof'
       )
     })
