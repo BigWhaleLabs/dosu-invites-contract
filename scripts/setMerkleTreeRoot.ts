@@ -35,8 +35,3 @@ async function wait(
 ): Promise<ContractReceipt> {
   return (await tx).wait()
 }
-
-setMerkleTreeRoot().catch((error) => {
-  console.error(error)
-  process.exitCode = 1
-})
