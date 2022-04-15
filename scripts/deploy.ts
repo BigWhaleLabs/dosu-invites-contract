@@ -9,7 +9,7 @@ async function deployContract() {
 
   const DosuInvites = await ethers.getContractFactory('DosuInvites')
   const dosuInvites = await DosuInvites.deploy()
-
+  console.log('tx:', dosuInvites.deployTransaction)
   await dosuInvites.deployed()
 
   const address = dosuInvites.address
@@ -19,9 +19,13 @@ async function deployContract() {
   console.log('Wait for 1 minute')
   await new Promise((resolve) => setTimeout(resolve, 60000))
 
-  await run('verify:verify', {
-    address,
-  })
+  try {
+    await run('verify:verify', {
+      address,
+    })
+  } catch (err) {
+    console.log('Error verifiying contract on etherscan:', err)
+  }
 
   console.log('DosuInvites verified')
 

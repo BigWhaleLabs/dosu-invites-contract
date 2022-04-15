@@ -26,12 +26,8 @@ export default async function setMerkleTreeRoot(contractAddress?: string) {
   const DosuInvites = await ethers.getContractFactory('DosuInvites')
   const contract = await DosuInvites.attach(address)
   console.log('Setting merkle tree')
-  await wait(contract.setMerkleRoot(root))
+  const tx = await contract.setMerkleRoot(root)
+  console.log('tx:', tx)
+  await tx.wait()
   console.log('Merkle root updated in the contract')
-}
-
-async function wait(
-  tx: ContractTransaction | Promise<ContractTransaction>
-): Promise<ContractReceipt> {
-  return (await tx).wait()
 }
