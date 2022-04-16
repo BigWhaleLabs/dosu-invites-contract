@@ -26,7 +26,7 @@
     "eth-lint": "yarn solhint 'contracts/**/*.sol'",
     "lint": "prettier --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
     "prettify": "prettier --write .",
-    "release": "np --no-publish"
+    "release": "np"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
