@@ -1,38 +1,28 @@
-# invites.dosu.io contract code
+# Dosu Invites contract
 
-> The last version of the contract is deployed here: https://ropsten.etherscan.io/address/0x399f4a0a9d6E8f6f4BD019340e4d1bE0C9a742F0
+## Usage
 
-# Etherscan verification
-
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-1. Clone this repo: `git clone https://github.com/BigWhaleLabs/dosu-invites-contract`
-2. Run `yarn` in the root folder
-3. Setup the [etherscan api project][etherscanapi]
-4. Also setup [Alchemy Project][alchemyapps] (Billing information required)
-5. Create `.env` with the environment variables listed below
-6. Fill `data/allowlist.json` with ETH addresses (31 should be enough)
-6. With a valid .env file in place, first deploy your contract: `yarn deploy`. Please notice, that this costs test money, which you can get at the [faucet](https://app.mycrypto.com/faucet)
-7. Wait until contract creation and code verification are finished. And wait for Merkle Tree setting is complete
-    - If the contract was created, but the root wasn't set, please take the contract address and set it in the `scripts/setMerkleTreeRoot.ts` instead of `YOUR CONTRACT ADDRESS`
-    - Then run `yarn set-merkle-root` 
-8. `setBaseUri` of the contract on etherscan (take `baseUri` from the `dosu-invites-backend`)
-
-And you should be good to go! Feel free to fork and submit pull requests.
+1. Clone the repository with `git clone git@github.com:BigWhaleLabs/dosu-invites-contract.git`
+2. Install the dependencies with `yarn`
+3. Add environment vareables to your `.env` file
+4. Run the scripts below
 
 ## Environment variables
 
-| Name                | Description                                                   |
-| ------------------- | ------------------------------------------------------------- |
-| `ETHERSCAN_API_KEY` | You can get one [on etherscan][etherscanapi]                  |
-| `ROPSTEN_URL`       | URL of the node URL (eg from [Alchemy][alchemyapps])          |
-| `PRIVATE_KEY`       | Key of the account which will send the deployment transaction |
+| Name                         | Description                       |
+| ---------------------------- | --------------------------------- |
+| `ETHERSCAN_API_KEY`          | Etherscan API key                 |
+| `ROPSTEN_RPC_URL`            | Ropsten RPC URL                   |
+| `CONTRACT_OWNER_PRIVATE_KEY` | Private key of the contract owner |
 
-Also, please, consider looking at `.env.sample`.
+Also check out the `.env.example` file for more information.
 
-# Performance optimizations
+## Available scripts
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
-
-[alchemyapps]: https://dashboard.alchemyapi.io/apps/
-[etherscanapi]: https://etherscan.io/myapikey
+- `yarn compile` — compiles the contract ts interface to the `typechain` directory
+- `yarn test` — runs the test suite
+- `yarn deploy` — deploys the contract to the network
+- `yarn eth-lint` — runs the linter for the solidity contract
+- `yarn lint` — runs all the linters
+- `yarn prettify` — prettifies the code in th project
+- `yarn release` — relases the `typechain` directory to NPM

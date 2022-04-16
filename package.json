@@ -1,6 +1,6 @@
 {
   "name": "@big-whale-labs/dosu-invites-contract",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Dosu Invites contract code",
   "repository": {
     "type": "git",
@@ -20,19 +20,19 @@
     "contents": "typechain"
   },
   "scripts": {
-    "release": "np --no-publish",
-    "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
-    "update-merkle-root": "yarn hardhat run --network ropsten scripts/updateMerkleTreeRoot.ts",
-    "pretty": "prettier --write .",
-    "lint": "yarn pretty && eslint --max-warnings 0 --ext ts,tsx,json src && yarn ethLint",
-    "ethLint": "yarn solhint 'contracts/**/*.sol'",
     "compile": "yarn hardhat compile",
-    "test": "yarn hardhat test"
+    "test": "yarn hardhat test",
+    "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
+    "eth-lint": "yarn solhint 'contracts/**/*.sol'",
+    "lint": "prettier --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
+    "prettify": "prettier --write .",
+    "release": "np --no-publish"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.5.0",
     "@typechain/ethers-v5": "^10.0.0",
     "@typechain/hardhat": "^6.0.0",
     "@types/chai": "^4.3.0",
@@ -43,7 +43,7 @@
     "@typescript-eslint/parser": "^5.18.0",
     "chai": "^4.3.6",
     "dotenv": "^16.0.0",
-    "envalid": "^7.3.0",
+    "envalid": "^7.3.1",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
@@ -55,6 +55,8 @@
     "ethers": "^5.6.2",
     "hardhat": "^2.9.3",
     "hardhat-gas-reporter": "^1.0.8",
+    "merkletreejs": "^0.2.31",
+    "np": "^7.6.1",
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.7",
@@ -62,13 +64,6 @@
     "ts-node": "^10.7.0",
     "typechain": "^8.0.0",
     "typescript": "^4.6.3"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.5.0",
-    "keccak256": "^1.0.6",
-    "lodash": "^4.17.21",
-    "merkletreejs": "^0.2.31",
-    "np": "^7.6.1"
   },
   "packageManager": "yarn@3.1.1"
 }

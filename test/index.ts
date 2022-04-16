@@ -1,11 +1,8 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { DosuInvites } from '../typechain'
-
-import MerkleTree from '../src/merkleTree'
-
-import { addressToString } from './helpers'
+import { DosuInvites } from 'typechain'
+import { MerkleTree } from 'merkletreejs'
 
 const URI_MOCK =
   'https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac'
@@ -15,35 +12,31 @@ const ZERO_BYTES =
 
 describe('DosuInvites', async function () {
   let contract: DosuInvites
-  let contractAsUser: DosuInvites
   let contractAsOwner: DosuInvites
 
   let accounts: SignerWithAddress[]
-  let addrs: string[]
-  let deployer: SignerWithAddress
-  let user: SignerWithAddress
+  let addresses: string[]
   let owner: SignerWithAddress
-  let user1: SignerWithAddress
-  let user2: SignerWithAddress
 
   let whitelistTree: MerkleTree
 
   beforeEach(async () => {
     accounts = await ethers.getSigners()
-    ;[deployer, user, owner, user1, user2] = accounts
+    owner = accounts[2]
 
     const factory = await ethers.getContractFactory('DosuInvites')
     contract = await factory.deploy()
     await contract.deployed()
 
     await (await contract.transferOwnership(owner.address)).wait()
-    contractAsUser = contract.connect(user)
     contractAsOwner = contract.connect(owner)
     await contract.deployed()
 
-    addrs = accounts.map((a) => a.address)
+    addresses = accounts.map((a) => a.address)
 
-    whitelistTree = new MerkleTree([addrs[0], addrs[1]])
+    whitelistTree = new MerkleTree([addresses[0], addresses[1]], undefined, {
+      sortPairs: true,
+    })
   })
 
   it('setMerkleTreeRoot', async () => {
@@ -60,16 +53,16 @@ describe('DosuInvites', async function () {
 
     before(async () => {
       leaves = [
-        addrs[0],
-        addrs[1],
-        addrs[2],
-        addrs[3],
-        addrs[4],
-        addrs[5],
-        addrs[6],
-        addrs[7],
-        addrs[8],
-        addrs[9],
+        addresses[0],
+        addresses[1],
+        addresses[2],
+        addresses[3],
+        addresses[4],
+        addresses[5],
+        addresses[6],
+        addresses[7],
+        addresses[8],
+        addresses[9],
       ]
       if (leaves.length < MAX_TREE_SIZE_TO_TEST) {
         throw new Error('Invalid MAX_TREE_SIZE_TO_TEST')
@@ -81,26 +74,26 @@ describe('DosuInvites', async function () {
     it('succesfully whitelist minting', async () => {
       const contractAsAccount0 = contract.connect(accounts[0])
 
-      await contractAsAccount0.mint(whitelistTree.getProof(addrs[0]))
+      await contractAsAccount0.mint(whitelistTree.getHexProof(addresses[0]))
       expect(await contract.totalSupply()).to.equal(1)
     })
     it('cannot mint if Merkle root is not set', async function () {
       await contractAsOwner.setMerkleRoot(ZERO_BYTES)
       await expect(
-        contract.mint(whitelistTree.getProof(addrs[0]))
+        contract.mint(whitelistTree.getProof(addresses[0]))
       ).to.be.revertedWith('Invalid Merkle proof')
     })
     it('cannot mint if Merkle root is set to the root of a different tree', async function () {
-      const newTree = new MerkleTree([addrs[4], addrs[5]])
+      const newTree = new MerkleTree([addresses[4], addresses[5]])
 
       await contractAsOwner.setMerkleRoot(newTree.getRoot())
       await expect(
-        contract.mint(whitelistTree.getProof(addrs[0]))
+        contract.mint(whitelistTree.getProof(addresses[0]))
       ).to.be.revertedWith('Invalid Merkle proof')
     })
     it('cannot mint with a proof that does not match the sender', async function () {
       const contractAsAccount1 = contract.connect(accounts[1])
-      const proof = whitelistTree.getProof(addrs[0])
+      const proof = whitelistTree.getProof(addresses[0])
 
       await expect(contractAsAccount1.mint(proof)).to.be.revertedWith(
         'Invalid Merkle proof'

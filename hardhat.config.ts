@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import { cleanEnv, bool, str } from 'envalid'
+import { cleanEnv, str } from 'envalid'
 import { HardhatUserConfig } from 'hardhat/config'
 import '@nomiclabs/hardhat-etherscan'
 import '@nomiclabs/hardhat-waffle'
@@ -9,27 +9,24 @@ import 'solidity-coverage'
 
 dotenv.config()
 
-const { PRIVATE_KEY, ETHERSCAN_API_KEY, ROPSTEN_URL, REPORT_GAS } = cleanEnv(
-  process.env,
-  {
-    PRIVATE_KEY: str(),
-    ROPSTEN_URL: str(),
+const { CONTRACT_OWNER_PRIVATE_KEY, ROPSTEN_RPC_URL, ETHERSCAN_API_KEY } =
+  cleanEnv(process.env, {
+    CONTRACT_OWNER_PRIVATE_KEY: str(),
+    ROPSTEN_RPC_URL: str(),
     ETHERSCAN_API_KEY: str(),
-    REPORT_GAS: bool({ default: true }),
-  }
-)
+  })
 
 const config: HardhatUserConfig = {
   solidity: '0.8.4',
   networks: {
     ropsten: {
-      url: ROPSTEN_URL,
-      accounts: [PRIVATE_KEY],
+      url: ROPSTEN_RPC_URL,
+      accounts: [CONTRACT_OWNER_PRIVATE_KEY],
     },
   },
   gasReporter: {
-    enabled: REPORT_GAS,
-    currency: 'USD',
+    enabled: true,
+    currency: 'ETH',
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,

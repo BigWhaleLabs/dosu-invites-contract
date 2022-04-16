@@ -5,8 +5,13 @@
     "strict": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "baseUrl": "."
   },
-  "include": ["./scripts", "./test", "./typechain", "./src"],
-  "files": ["./hardhat.config.ts"]
+  "include": [
+    "scripts/**/*",
+    "test/**/*",
+    "hardhat.config.ts",
+    "typechain/**/*"
+  ]
 }

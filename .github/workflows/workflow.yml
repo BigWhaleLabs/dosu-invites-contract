@@ -1,4 +1,4 @@
-name: Compile and publish
+name: Compile and lint
 
 on:
   release:
@@ -18,9 +18,5 @@ jobs:
         run: yarn
       - name: Compile code
         run: yarn compile
-      - name: Deploy smart contract
-        run: yarn deploy
-      - name: Publish package
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Lint code
+        run: yarn lint

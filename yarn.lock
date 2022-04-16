@@ -50,7 +50,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.18.0
     chai: ^4.3.6
     dotenv: ^16.0.0
-    envalid: ^7.3.0
+    envalid: ^7.3.1
     eslint: ^8.12.0
     eslint-config-prettier: ^8.5.0
     eslint-config-standard: ^16.0.3
@@ -62,8 +62,6 @@ __metadata:
     ethers: ^5.6.2
     hardhat: ^2.9.3
     hardhat-gas-reporter: ^1.0.8
-    keccak256: ^1.0.6
-    lodash: ^4.17.21
     merkletreejs: ^0.2.31
     np: ^7.6.1
     prettier: ^2.6.2
@@ -3282,16 +3280,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^6.0.3":
-  version: 6.0.3
-  resolution: "buffer@npm:6.0.3"
-  dependencies:
-    base64-js: ^1.3.1
-    ieee754: ^1.2.1
-  checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
-  languageName: node
-  linkType: hard
-
 "bufferutil@npm:^4.0.1":
   version: 4.0.6
   resolution: "bufferutil@npm:4.0.6"
@@ -4857,7 +4845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"envalid@npm:^7.3.0":
+"envalid@npm:^7.3.1":
   version: 7.3.1
   resolution: "envalid@npm:7.3.1"
   dependencies:
@@ -7614,7 +7602,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ieee754@npm:^1.1.13, ieee754@npm:^1.2.1":
+"ieee754@npm:^1.1.13":
   version: 1.2.1
   resolution: "ieee754@npm:1.2.1"
   checksum: 5144c0c9815e54ada181d80a0b810221a253562422e7c6c3a60b1901154184f49326ec239d618c416c1c5945a2e197107aee8d986a3dd836b53dffefd99b5e7e
@@ -8755,17 +8743,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keccak256@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "keccak256@npm:1.0.6"
-  dependencies:
-    bn.js: ^5.2.0
-    buffer: ^6.0.3
-    keccak: ^3.0.2
-  checksum: decafb4b37adcfa6d06b6a5d28546d0d7a9f01ccf4b8cc8963cf8188fcc79a230d7e22988e860813623c602d764259734423e38fd7b9aadfeb409d6928a1d4cf
-  languageName: node
-  linkType: hard
-
 "keccak@npm:3.0.1":
   version: 3.0.1
   resolution: "keccak@npm:3.0.1"
@@ -8777,7 +8754,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keccak@npm:^3.0.0, keccak@npm:^3.0.2":
+"keccak@npm:^3.0.0":
   version: 3.0.2
   resolution: "keccak@npm:3.0.2"
   dependencies:
@@ -14502,9 +14479,9 @@ __metadata:
   linkType: hard
 
 "v8-compile-cache-lib@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "v8-compile-cache-lib@npm:3.0.0"
-  checksum: 674e312bbca796584b61dc915f33c7e7dc4e06d196e0048cb772c8964493a1ec723f1dd014d9419fd55c24a6eae148f60769da23f622e05cd13268063fa1ed6b
+  version: 3.0.1
+  resolution: "v8-compile-cache-lib@npm:3.0.1"
+  checksum: 78089ad549e21bcdbfca10c08850022b22024cdcc2da9b168bcf5a73a6ed7bf01a9cebb9eac28e03cd23a684d81e0502797e88f3ccd27a32aeab1cfc44c39da0
   languageName: node
   linkType: hard
 
