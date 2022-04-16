@@ -8,7 +8,14 @@ async function deployContract() {
   console.log('Account balance:', (await deployer.getBalance()).toString())
   const DosuInvites = await ethers.getContractFactory('DosuInvites')
   const dosuInvites = await DosuInvites.deploy()
-  console.log('Deploy tx:', dosuInvites.deployTransaction)
+  console.log(
+    'Deploy tx gas price:',
+    dosuInvites.deployTransaction.gasPrice?.div(1e9).toString()
+  )
+  console.log(
+    'Deploy tx gas limit:',
+    dosuInvites.deployTransaction.gasLimit.div(1e9).toString()
+  )
   await dosuInvites.deployed()
   const address = dosuInvites.address
   console.log('Contract deployed to:', address)
