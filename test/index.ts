@@ -1,16 +1,16 @@
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { DosuInvites } from 'typechain'
 import { MerkleTree } from 'merkletreejs'
+import { Contract } from 'ethers'
 
 const MAX_TREE_SIZE_TO_TEST = 9
 const ZERO_BYTES =
   '0x0000000000000000000000000000000000000000000000000000000000000000'
 
 describe('DosuInvites', async function () {
-  let contract: DosuInvites
-  let contractAsOwner: DosuInvites
+  let contract: Contract
+  let contractAsOwner: Contract
 
   let accounts: SignerWithAddress[]
   let addresses: string[]
