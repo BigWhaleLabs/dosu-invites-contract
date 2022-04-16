@@ -7,11 +7,6 @@
     "url": "git+https://github.com/BigWhaleLabs/dosu-invites-contract"
   },
   "license": "MIT",
-  "main": "typechain/index.js",
-  "types": "typechain/index.d.ts",
-  "files": [
-    "typechain"
-  ],
   "np": {
     "2fa": false,
     "tests": false,
