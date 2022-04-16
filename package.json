@@ -16,7 +16,7 @@
     "contents": "typechain"
   },
   "scripts": {
-    "compile": "yarn hardhat compile && cp package.json typechain/package.json",
+    "compile": "yarn hardhat compile",
     "test": "yarn hardhat test",
     "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
     "eth-lint": "yarn solhint 'contracts/**/*.sol'",
