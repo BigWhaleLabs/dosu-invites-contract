@@ -4,14 +4,9 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "noEmit": true,
     "declaration": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "outDir": "dist"
   },
-  "include": [
-    "scripts/**/*",
-    "test/**/*",
-    "hardhat.config.ts",
-    "typechain/**/*"
-  ]
+  "include": ["typechain/**/*"]
 }

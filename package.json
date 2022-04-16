@@ -16,6 +16,8 @@
   "files": [
     "typechain/**/*"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "compile": "yarn hardhat compile",
     "test": "yarn hardhat test",
@@ -23,7 +25,8 @@
     "eth-lint": "yarn solhint 'contracts/**/*.sol'",
     "lint": "prettier --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
     "prettify": "prettier --write .",
-    "release": "np"
+    "release": "np",
+    "prepublish": "yarn tsc"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
