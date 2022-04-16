@@ -13,7 +13,7 @@
     "tests": false,
     "cleanup": false,
     "yarn": false,
-    "contents": "typechain"
+    "contents": "./typechain"
   },
   "scripts": {
     "compile": "yarn hardhat compile",
