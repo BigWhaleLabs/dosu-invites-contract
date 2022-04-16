@@ -4,8 +4,6 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { DosuInvites } from 'typechain'
 import { MerkleTree } from 'merkletreejs'
 
-const URI_MOCK =
-  'https://ipfs.io/ipfs/QmS9USYMcsLXqCGaeN9sZaSTLoeGuS6NYzGm6QRsGn5Hac'
 const MAX_TREE_SIZE_TO_TEST = 9
 const ZERO_BYTES =
   '0x0000000000000000000000000000000000000000000000000000000000000000'
@@ -40,13 +38,13 @@ describe('DosuInvites', async function () {
   })
 
   it('setMerkleTreeRoot', async () => {
-    await contractAsOwner.setMerkleRoot(whitelistTree.getRoot())
+    await contractAsOwner.setAllowlistMerkleRoot(whitelistTree.getRoot())
   })
 
-  it('setBaseURI', async () => {
-    await contractAsOwner.setBaseURI(URI_MOCK)
-    expect(await contractAsOwner.baseURI()).to.equal(URI_MOCK)
-  })
+  // it('setBaseURI', async () => {
+  //   await contractAsOwner.setBaseURI(URI_MOCK)
+  //   expect(await contractAsOwner.baseURI()).to.equal(URI_MOCK)
+  // })
 
   describe('whitelist minting', async () => {
     let leaves: any
@@ -69,7 +67,7 @@ describe('DosuInvites', async function () {
       }
     })
     beforeEach(async () => {
-      await contractAsOwner.setMerkleRoot(whitelistTree.getRoot())
+      await contractAsOwner.setAllowlistMerkleRoot(whitelistTree.getRoot())
     })
     it('succesfully whitelist minting', async () => {
       const contractAsAccount0 = contract.connect(accounts[0])
@@ -78,7 +76,7 @@ describe('DosuInvites', async function () {
       expect(await contract.totalSupply()).to.equal(1)
     })
     it('cannot mint if Merkle root is not set', async function () {
-      await contractAsOwner.setMerkleRoot(ZERO_BYTES)
+      await contractAsOwner.setAllowlistMerkleRoot(ZERO_BYTES)
       await expect(
         contract.mint(whitelistTree.getProof(addresses[0]))
       ).to.be.revertedWith('Invalid Merkle proof')
@@ -86,7 +84,7 @@ describe('DosuInvites', async function () {
     it('cannot mint if Merkle root is set to the root of a different tree', async function () {
       const newTree = new MerkleTree([addresses[4], addresses[5]])
 
-      await contractAsOwner.setMerkleRoot(newTree.getRoot())
+      await contractAsOwner.setAllowlistMerkleRoot(newTree.getRoot())
       await expect(
         contract.mint(whitelistTree.getProof(addresses[0]))
       ).to.be.revertedWith('Invalid Merkle proof')
