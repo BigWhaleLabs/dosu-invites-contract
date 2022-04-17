@@ -6,7 +6,6 @@
     "type": "git",
     "url": "git+https://github.com/BigWhaleLabs/dosu-invites-contract"
   },
-  "private": true,
   "license": "MIT",
   "np": {
     "2fa": false,
