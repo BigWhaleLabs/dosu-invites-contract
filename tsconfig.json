@@ -8,5 +8,10 @@
     "baseUrl": ".",
     "outDir": "dist"
   },
-  "include": ["typechain/**/*"]
+  "include": [
+    "scripts/**/*",
+    "test/**/*",
+    "hardhat.config.ts",
+    "typechain/**/*"
+  ]
 }
