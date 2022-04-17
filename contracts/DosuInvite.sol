@@ -8,8 +8,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
-  @title Dosu Invites NFT
-  @dev Acts as a key to use https://dosu.io
+ * @title Dosu Invites NFT
+ * @dev Acts as a key to use https://dosu.io
  */
 contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
   // Uses
