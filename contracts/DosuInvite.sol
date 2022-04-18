@@ -2,7 +2,6 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -11,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @title Dosu Invites NFT
  * @dev Acts as a key to use https://dosu.io
  */
-contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
+contract DosuInvites is ERC721, Ownable {
   // Uses
   using Counters for Counters.Counter;
   // State
@@ -59,14 +58,14 @@ contract DosuInvites is ERC721, ERC721Enumerable, Ownable {
     address _from,
     address _to,
     uint256 _tokenId
-  ) internal override(ERC721, ERC721Enumerable) {
+  ) internal override(ERC721) {
     super._beforeTokenTransfer(_from, _to, _tokenId);
   }
 
   function supportsInterface(bytes4 _interfaceId)
     public
     view
-    override(ERC721, ERC721Enumerable)
+    override(ERC721)
     returns (bool)
   {
     return super.supportsInterface(_interfaceId);
