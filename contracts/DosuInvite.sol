@@ -20,7 +20,9 @@ contract DosuInvites is ERC721Enumerable, Ownable {
   // Events
   event Mint(address to, uint256 tokenId);
 
-  constructor() ERC721("Dosu Invites", "DOSU") {}
+  constructor() ERC721("Dosu Invites", "DOSU") {
+    mintedTokensCount.increment();
+  }
 
   /**
    * @dev Mints an invite
