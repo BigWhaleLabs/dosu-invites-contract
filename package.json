@@ -1,0 +1,69 @@
+{
+  "name": "@big-whale-labs/dosu-invites-contract",
+  "version": "0.0.11",
+  "description": "Dosu Invites contract code",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BigWhaleLabs/dosu-invites-contract"
+  },
+  "license": "MIT",
+  "np": {
+    "2fa": false,
+    "tests": false,
+    "cleanup": false,
+    "yarn": false
+  },
+  "files": [
+    "dist/typechain/**/*"
+  ],
+  "main": "dist/typechain/index.js",
+  "types": "dist/typechain/index.d.ts",
+  "scripts": {
+    "compile": "yarn hardhat compile",
+    "test": "yarn hardhat test",
+    "deploy": "yarn hardhat run --network ropsten scripts/deploy.ts",
+    "eth-lint": "yarn solhint 'contracts/**/*.sol'",
+    "lint": "prettier --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
+    "prettify": "prettier --write .",
+    "release": "np",
+    "prepublishOnly": "yarn compile && yarn tsc"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-etherscan": "^3.0.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.5.0",
+    "@typechain/ethers-v5": "^10.0.0",
+    "@typechain/hardhat": "^6.0.0",
+    "@types/chai": "^4.3.0",
+    "@types/lodash": "^4.14.181",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.0",
+    "envalid": "^7.3.1",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.2",
+    "hardhat": "^2.9.3",
+    "hardhat-gas-reporter": "^1.0.8",
+    "merkletreejs": "^0.2.31",
+    "np": "^7.6.1",
+    "prettier": "^2.6.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.19",
+    "solhint": "^3.3.7",
+    "solidity-coverage": "^0.7.20",
+    "ts-node": "^10.7.0",
+    "typechain": "^8.0.0",
+    "typescript": "^4.6.3"
+  },
+  "packageManager": "yarn@3.1.1"
+}
