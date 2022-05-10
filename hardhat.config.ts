@@ -21,7 +21,7 @@ const { CONTRACT_OWNER_PRIVATE_KEY, RPC_URL, ETHERSCAN_API_KEY } = cleanEnv(
 const config: HardhatUserConfig = {
   solidity: '0.8.4',
   networks: {
-    ropsten: {
+    deploy: {
       url: RPC_URL,
       accounts: [CONTRACT_OWNER_PRIVATE_KEY],
     },

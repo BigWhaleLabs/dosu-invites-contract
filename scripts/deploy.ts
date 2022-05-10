@@ -6,6 +6,14 @@ async function deployContract() {
   // Deploy the contract
   console.log('Deploying contracts with the account:', deployer.address)
   console.log('Account balance:', (await deployer.getBalance()).toString())
+  const provider = ethers.provider
+  const { chainId } = await provider.getNetwork()
+  const chains = {
+    1: 'mainnet',
+    3: 'ropsten',
+    4: 'rinkeby',
+  } as { [chainId: number]: string }
+  const chainName = chains[chainId]
   const DosuInvites = await ethers.getContractFactory('DosuInvites')
   const dosuInvites = await DosuInvites.deploy()
   console.log('Deploy tx gas price:', dosuInvites.deployTransaction.gasPrice)
@@ -16,7 +24,7 @@ async function deployContract() {
   console.log('Wait for 1 minute to make sure blockchain is updated')
   await new Promise((resolve) => setTimeout(resolve, 60 * 1000))
   // Try to verify the contract on Etherscan
-  console.log('Verifying contract on Etherscan')
+  console.log('Verifying  contract on Etherscan')
   try {
     await run('verify:verify', {
       address,
@@ -29,7 +37,9 @@ async function deployContract() {
   console.log('Contract address:', address)
   console.log(
     'Etherscan URL:',
-    `https://ropsten.etherscan.io/address/${address}`
+    `https://${
+      chainName !== 'mainnet' ? `${chainName}.` : ''
+    }etherscan.io/address/${address}`
   )
 }
 
