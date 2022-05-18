@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import { cleanEnv, str } from 'envalid'
 import { HardhatUserConfig } from 'hardhat/config'
+import { ETH_RPC as FALLBACK_ETH_RPC } from '@big-whale-labs/constants'
 import '@nomiclabs/hardhat-etherscan'
 import '@nomiclabs/hardhat-waffle'
 import '@typechain/hardhat'
@@ -9,11 +10,11 @@ import 'solidity-coverage'
 
 dotenv.config()
 
-const { CONTRACT_OWNER_PRIVATE_KEY, RPC_URL, ETHERSCAN_API_KEY } = cleanEnv(
+const { CONTRACT_OWNER_PRIVATE_KEY, ETH_RPC, ETHERSCAN_API_KEY } = cleanEnv(
   process.env,
   {
     CONTRACT_OWNER_PRIVATE_KEY: str(),
-    RPC_URL: str(),
+    ETH_RPC: str({ default: FALLBACK_ETH_RPC }),
     ETHERSCAN_API_KEY: str(),
   }
 )
@@ -22,7 +23,7 @@ const config: HardhatUserConfig = {
   solidity: '0.8.4',
   networks: {
     deploy: {
-      url: RPC_URL,
+      url: ETH_RPC,
       accounts: [CONTRACT_OWNER_PRIVATE_KEY],
     },
   },
