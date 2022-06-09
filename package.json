@@ -26,7 +26,7 @@
     "lint": "prettier --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
     "prettify": "prettier --write .",
     "release": "np",
-    "prepublishOnly": "yarn compile && yarn tsc"
+    "prepublishOnly": "yarn build && yarn tsc"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
