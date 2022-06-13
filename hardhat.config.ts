@@ -20,7 +20,7 @@ const { CONTRACT_OWNER_PRIVATE_KEY, ETH_RPC, ETHERSCAN_API_KEY } = cleanEnv(
 )
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.4',
+  solidity: '0.8.14',
   networks: {
     deploy: {
       url: ETH_RPC,
