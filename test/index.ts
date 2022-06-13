@@ -43,11 +43,6 @@ describe('DosuInvites', async function () {
     await contractAsOwner.setAllowlistMerkleRoot(whitelistTree.getHexRoot())
   })
 
-  // it('setBaseURI', async () => {
-  //   await contractAsOwner.setBaseURI(URI_MOCK)
-  //   expect(await contractAsOwner.baseURI()).to.equal(URI_MOCK)
-  // })
-
   describe('whitelist minting', async () => {
     beforeEach(async () => {
       await contractAsOwner.setAllowlistMerkleRoot(whitelistTree.getHexRoot())

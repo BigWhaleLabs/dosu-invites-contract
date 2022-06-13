@@ -12,6 +12,7 @@ async function deployContract() {
     1: 'mainnet',
     3: 'ropsten',
     4: 'rinkeby',
+    5: 'goerli',
   } as { [chainId: number]: string }
   const chainName = chains[chainId]
   const DosuInvites = await ethers.getContractFactory('DosuInvites')
