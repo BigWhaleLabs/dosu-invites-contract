@@ -32,10 +32,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/constants@npm:^0.0.12":
-  version: 0.0.12
-  resolution: "@big-whale-labs/constants@npm:0.0.12"
-  checksum: b6d921d50e9755130d4b534c1e6f715a41a45bd8aef602faaaa561eaf00367b29f4500f2e303c0918bb79d0ecb18970644d1c91e295ed0d84bc83eeaee7df163
+"@big-whale-labs/constants@npm:^0.0.15":
+  version: 0.0.15
+  resolution: "@big-whale-labs/constants@npm:0.0.15"
+  checksum: 3a044d2e8519b6ffaabf52aa2a1cf70053af93176acc3227ecd02e01d9b363b6ab29f16dc0cc20830cdb48ee332ba4a544959af1d88240b84c2a1ebaeabfa7a7
   languageName: node
   linkType: hard
 
@@ -43,17 +43,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@big-whale-labs/dosu-invites-contract@workspace:."
   dependencies:
-    "@big-whale-labs/constants": ^0.0.12
+    "@big-whale-labs/constants": ^0.0.15
     "@nomiclabs/hardhat-ethers": ^2.0.6
     "@nomiclabs/hardhat-etherscan": ^3.1.0
     "@nomiclabs/hardhat-waffle": ^2.0.3
     "@openzeppelin/contracts": ^4.6.0
     "@typechain/ethers-v5": ^10.1.0
-    "@typechain/hardhat": ^6.1.0
+    "@typechain/hardhat": ^6.1.2
     "@types/chai": ^4.3.1
     "@types/lodash": ^4.14.182
     "@types/mocha": ^9.1.1
-    "@types/node": ^17.0.42
+    "@types/node": ^18.0.0
     "@typescript-eslint/eslint-plugin": ^5.28.0
     "@typescript-eslint/parser": ^5.28.0
     chai: ^4.3.6
@@ -72,7 +72,7 @@ __metadata:
     hardhat-gas-reporter: ^1.0.8
     merkletreejs: ^0.2.31
     np: ^7.6.1
-    prettier: ^2.6.2
+    prettier: ^2.7.1
     prettier-plugin-solidity: ^1.0.0-beta.19
     solhint: ^3.3.7
     solidity-coverage: ^0.7.21
@@ -1603,9 +1603,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typechain/hardhat@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@typechain/hardhat@npm:6.1.0"
+"@typechain/hardhat@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@typechain/hardhat@npm:6.1.2"
   dependencies:
     fs-extra: ^9.1.0
     lodash: ^4.17.15
@@ -1616,7 +1616,7 @@ __metadata:
     ethers: ^5.4.7
     hardhat: ^2.9.9
     typechain: ^8.1.0
-  checksum: 95b91b1dc4b4ddee4dfe7b2f3869ebb7a6aeca4ff473feeebe2b413b994888afa5058d8bd414abf6d16056cae1a9266bb42c5d3228c07252d80b91e9a6a5428c
+  checksum: 875753de831825c95c30e6792949f38f69fcee888c1936042414c8d030ecc181817cc0f5cbf6f1764f30779b5f840201eb29addda45713fd0b58a71693102a2c
   languageName: node
   linkType: hard
 
@@ -1829,10 +1829,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^17.0.42":
-  version: 17.0.42
-  resolution: "@types/node@npm:17.0.42"
-  checksum: a200cd87e4f12d4d5682a893ad6e1140720c6c074a2cd075f254b3b8306d6174f5a3630e5d2347efb5e9b80d420404b5fafc8fe3c7d4c81998cd914c50b19f75
+"@types/node@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "@types/node@npm:18.0.0"
+  checksum: aab2b325727a2599f6d25ebe0dedf58c40fb66a51ce4ca9c0226ceb70fcda2d3afccdca29db5942eb48b158ee8585a274a1e3750c718bbd5399d7f41d62dfdcc
   languageName: node
   linkType: hard
 
@@ -11960,12 +11960,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.1.2, prettier@npm:^2.3.1, prettier@npm:^2.6.2":
+"prettier@npm:^2.1.2, prettier@npm:^2.3.1":
   version: 2.6.2
   resolution: "prettier@npm:2.6.2"
   bin:
     prettier: bin-prettier.js
   checksum: 48d08dde8e9fb1f5bccdd205baa7f192e9fc8bc98f86e1b97d919de804e28c806b0e6cc685e4a88211aa7987fa9668f30baae19580d87ced3ed0f2ec6572106f
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "prettier@npm:2.7.1"
+  bin:
+    prettier: bin-prettier.js
+  checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
   languageName: node
   linkType: hard
 
