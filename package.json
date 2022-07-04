@@ -23,7 +23,7 @@
     "test": "yarn hardhat test",
     "deploy": "yarn hardhat run --network deploy scripts/deploy.ts",
     "eth-lint": "yarn solhint 'contracts/**/*.sol'",
-    "lint": "prettier --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
+    "lint": "prettier  --max-warnings 0 --check . && eslint --max-warnings 0 --ext ts scripts && yarn eth-lint",
     "prettify": "prettier --write .",
     "release": "np",
     "prepublishOnly": "yarn build && yarn tsc"
@@ -48,6 +48,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
